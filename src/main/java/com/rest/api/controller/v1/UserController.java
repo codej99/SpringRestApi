@@ -2,9 +2,9 @@ package com.rest.api.controller.v1;
 
 import com.rest.api.advice.exception.CUserNotFoundException;
 import com.rest.api.entity.User;
-import com.rest.api.model.response.BasicResult;
 import com.rest.api.model.response.CommonResult;
 import com.rest.api.model.response.ListResult;
+import com.rest.api.model.response.SingleResult;
 import com.rest.api.repo.UserJpaRepo;
 import com.rest.api.service.ResponseService;
 import io.swagger.annotations.Api;
@@ -12,8 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Locale;
 
 @Api(tags = {"1. User"})
 @RequiredArgsConstructor
@@ -33,25 +31,25 @@ public class UserController {
 
     @ApiOperation(value = "회원 단건 조회", notes = "userId로 회원을 조회한다")
     @GetMapping(value = "/user/{userId}")
-    public BasicResult<User> findUserById(@ApiParam(value = "회원ID", required = true) @PathVariable int userId,
-                                          @ApiParam(value = "언어", defaultValue = "ko") @RequestParam String lang) {
-        // 결과데이터가 단일건인경우 getBasicResult를 이용해서 결과를 출력한다.
-        return responseService.getBasicResult(userJpaRepo.findById(userId).orElseThrow(CUserNotFoundException::new));
+    public SingleResult<User> findUserById(@ApiParam(value = "회원ID", required = true) @PathVariable int userId,
+                                              @ApiParam(value = "언어", defaultValue = "ko") @RequestParam String lang) {
+        // 결과데이터가 단일건인경우 getSingleResult를 이용해서 결과를 출력한다.
+        return responseService.getSingleResult(userJpaRepo.findById(userId).orElseThrow(CUserNotFoundException::new));
     }
 
     @ApiOperation(value = "회원 입력", notes = "회원을 입력한다")
     @PostMapping(value = "/user")
-    public BasicResult<User> save(@ApiParam(value = "회원이름", required = true) @RequestParam String name,
+    public SingleResult<User> save(@ApiParam(value = "회원이름", required = true) @RequestParam String name,
                                   @ApiParam(value = "회원이메일", required = true) @RequestParam String email) {
         User user = new User();
         user.setName(name);
         user.setEmail(email);
-        return responseService.getBasicResult(userJpaRepo.save(user));
+        return responseService.getSingleResult(userJpaRepo.save(user));
     }
 
     @ApiOperation(value = "회원 수정", notes = "회원정보를 수정한다")
     @PutMapping(value = "/user")
-    public BasicResult<User> modify(
+    public SingleResult<User> modify(
             @ApiParam(value = "회원ID", required = true) @RequestParam int userId,
             @ApiParam(value = "회원이름", required = true) @RequestParam String name,
             @ApiParam(value = "회원이메일", required = true) @RequestParam String email) {
@@ -59,7 +57,7 @@ public class UserController {
         user.setId(userId);
         user.setName(name);
         user.setEmail(email);
-        return responseService.getBasicResult(userJpaRepo.save(user));
+        return responseService.getSingleResult(userJpaRepo.save(user));
     }
 
     @ApiOperation(value = "회원 삭제", notes = "userId로 회원정보를 삭제한다")

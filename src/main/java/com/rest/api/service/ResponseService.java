@@ -1,8 +1,8 @@
 package com.rest.api.service;
 
-import com.rest.api.model.response.BasicResult;
 import com.rest.api.model.response.CommonResult;
 import com.rest.api.model.response.ListResult;
+import com.rest.api.model.response.SingleResult;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +32,8 @@ public class ResponseService {
         }
     }
     // 단일건 결과를 처리하는 메소드
-    public <T> BasicResult<T> getBasicResult(T data) {
-        BasicResult<T> result = new BasicResult<>();
+    public <T> SingleResult<T> getSingleResult(T data) {
+        SingleResult<T> result = new SingleResult<>();
         result.setData(data);
         setSuccessResult(result);
         return result;
