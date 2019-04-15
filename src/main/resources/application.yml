@@ -8,7 +8,7 @@ spring:
     username: sa
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    #properties.hibernate.hbm2ddl.auto: none
+    properties.hibernate.hbm2ddl.auto: update
     showSql: true
   messages:
     basename: i18n/exception
