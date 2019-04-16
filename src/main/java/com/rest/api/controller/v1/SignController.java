@@ -2,7 +2,7 @@ package com.rest.api.controller.v1;
 
 import com.rest.api.advice.exception.CEmailSigninFailedException;
 import com.rest.api.entity.User;
-import com.rest.api.filter.JwtTokenProvider;
+import com.rest.api.config.security.JwtTokenProvider;
 import com.rest.api.model.response.CommonResult;
 import com.rest.api.model.response.SingleResult;
 import com.rest.api.repo.UserJpaRepo;
@@ -39,7 +39,7 @@ public class SignController {
         if (!passwordEncoder.matches(password, user.getPassword()))
             throw new CEmailSigninFailedException();
 
-        return responseService.getSingleResult(jwtTokenProvider.createToken(user.getUsername(), user.getRoles()));
+        return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRoles()));
     }
 
     @ApiOperation(value = "가입", notes = "회원가입을 한다.")

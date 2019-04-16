@@ -1,11 +1,11 @@
-package com.rest.api.filter;
+package com.rest.api.config.security;
 
-import com.rest.api.advice.exception.CInvalidJwtAuthenticationException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,9 +22,10 @@ import java.util.List;
 @Component
 public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
 
-    private String secretKey = "secret";
+    @Value("spring.jwt.secret")
+    private String secretKey;
 
-    private long tokenValidMilisecond = 1000L * 60 * 60; // 1hour
+    private long tokenValidMilisecond = 1000L * 60 * 60; // 1시간만 토큰 유효
 
     private final UserDetailsService userDetailsService;
 
@@ -34,8 +35,8 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
     }
 
     // Jwt 토큰 생성
-    public String createToken(String username, List<String> roles) {
-        Claims claims = Jwts.claims().setSubject(username);
+    public String createToken(String userPk, List<String> roles) {
+        Claims claims = Jwts.claims().setSubject(userPk);
         claims.put("roles", roles);
         Date now = new Date();
         return Jwts.builder()
@@ -48,16 +49,16 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
 
     // Jwt 토큰으로 인증 정보를 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUsername(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    // Jwt 토큰에서 회원 이름(ID) 추출
-    public String getUsername(String token) {
+    // Jwt 토큰에서 회원 구별 정보 추출
+    public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    // Request의 Header에서 token 파싱 : "X-AUTH-TOKEN: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb2Rlajk5QG5hdmVyLmNvbSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE1NTUzMTY1NzksImV4cCI6MTU1NTMyMDE3OX0.ftuRcpLZmMbKoxM3pQB5VA9As9Yamt10FN6Lbgu-pjVB3AGZDWfS9WRzGNbtZkKvSZH9swx3WgrHnONyrUoaqA"
+    // Request의 Header에서 token 파싱 : "X-AUTH-TOKEN: jwt토큰"
     public String resolveToken(HttpServletRequest req) {
         return req.getHeader("X-AUTH-TOKEN");
     }
@@ -68,7 +69,7 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
-            throw new CInvalidJwtAuthenticationException();
+            return false;
         }
     }
 }
