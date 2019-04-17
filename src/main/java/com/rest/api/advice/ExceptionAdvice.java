@@ -51,7 +51,7 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public CommonResult AccessDeniedException(HttpServletRequest request, AccessDeniedException e) {
+    public CommonResult accessDeniedException(HttpServletRequest request, AccessDeniedException e) {
         return responseService.getFailResult(Integer.valueOf(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
     }
 
