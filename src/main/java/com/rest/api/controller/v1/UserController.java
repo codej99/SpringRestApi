@@ -72,3 +72,4 @@ public class UserController {
         return responseService.getSuccessResult();
     }
 }
+
