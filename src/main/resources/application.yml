@@ -17,7 +17,7 @@ spring:
     secret: govlepel@$&
   social:
     kakao:
-      client_id: XXXXXXXXXXXXXXXXXXXXXXXX # 앱생성시 받은 REST API 키
+      client_id: XXXXXXXXXXXXXXXXXXXXXXXXXX # 앱생성시 받은 REST API 키
       redirect: /social/login/kakao
       url:
         login: https://kauth.kakao.com/oauth/authorize
