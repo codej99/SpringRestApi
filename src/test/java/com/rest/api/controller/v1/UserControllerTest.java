@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -36,15 +36,16 @@ public class UserControllerTest {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("id", "happydaddy@naver.com");
         params.add("password", "1234");
-        ResultActions result = mockMvc.perform(post("/v1/signin").params(params))
+        MvcResult result = mockMvc.perform(post("/v1/signin").params(params))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.code").value(0))
                 .andExpect(jsonPath("$.msg").exists())
-                .andExpect(jsonPath("$.data").exists());
+                .andExpect(jsonPath("$.data").exists())
+                .andReturn();
 
-        String resultString = result.andReturn().getResponse().getContentAsString();
+        String resultString = result.getResponse().getContentAsString();
         JacksonJsonParser jsonParser = new JacksonJsonParser();
         token = jsonParser.parseMap(resultString).get("data").toString();
     }
