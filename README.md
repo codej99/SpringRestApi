@@ -63,3 +63,8 @@
         - https://daddyprogrammer.org/post/636/springboot2-springsecurity-authentication-authorization/
     - Git
         - https://github.com/codej99/SpringRestApi/tree/feature/security
+- SpringBoot2로 Rest api 만들기(9) – Unit Test
+    - Document
+        - https://daddyprogrammer.org/post/938/springboot2-restapi-unit-test/
+    - Git
+        - https://github.com/codej99/SpringRestApi/tree/feature/junit-test
