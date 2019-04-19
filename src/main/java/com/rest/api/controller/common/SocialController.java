@@ -1,14 +1,11 @@
 package com.rest.api.controller.common;
 
 import com.google.gson.Gson;
-import com.rest.api.model.social.RetKakaoAuth;
+import com.rest.api.service.social.KakaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,10 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class SocialController {
 
     private final Environment env;
-
     private final RestTemplate restTemplate;
-
     private final Gson gson;
+    private final KakaoService kakaoService;
 
     @Value("${spring.url.base}")
     private String baseUrl;
@@ -57,22 +53,7 @@ public class SocialController {
      */
     @GetMapping(value = "/kakao")
     public ModelAndView redirectKakao(ModelAndView mav, @RequestParam String code) {
-        // Set header : Content-type: application/x-www-form-urlencoded
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        // Set parameter
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", kakaoClientId);
-        params.add("redirect_uri", baseUrl + kakaoRedirect);
-        params.add("code", code);
-        // Set http entity
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(env.getProperty("spring.social.kakao.url.token"), request, String.class);
-        if (response.getStatusCode() == HttpStatus.OK) {
-            RetKakaoAuth authInfo = gson.fromJson(response.getBody(), RetKakaoAuth.class);
-            mav.addObject("authInfo", authInfo);
-        }
+        mav.addObject("authInfo", kakaoService.getKakaoTokenInfo(code));
         mav.setViewName("social/redirectKakao");
         return mav;
     }
