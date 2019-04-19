@@ -68,3 +68,8 @@
         - https://daddyprogrammer.org/post/938/springboot2-restapi-unit-test/
     - Git
         - https://github.com/codej99/SpringRestApi/tree/feature/junit-test
+- SpringBoot2로 Rest api 만들기(10) – Social Login kakao
+    - Document
+        - https://daddyprogrammer.org/post/1012/springboot2-rest-api-social-login-kakao/
+    - Git
+        - https://github.com/codej99/SpringRestApi/tree/feature/social-kakao

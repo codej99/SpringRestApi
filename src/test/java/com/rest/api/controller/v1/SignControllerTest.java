@@ -1,19 +1,16 @@
 package com.rest.api.controller.v1;
 
-import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -85,5 +82,40 @@ public class SignControllerTest {
                 .andExpect(status().is5xxServerError())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.code").value(-9999));
+    }
+
+    @Test
+    public void signInProviderFail() throws Exception {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("accessToken", "XXXXXXXX");
+        mockMvc.perform(post("/v1/signin/kakao").params(params))
+                .andDo(print())
+                .andExpect(status().is5xxServerError())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(-1004));
+    }
+
+    @Test
+    public void signUpProvider() throws Exception {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("accessToken", "HizF3ir9522bMW3shkO0x0T9zBdXFCW1WsF56Qo9dVsAAAFqMwTqHw");
+        params.add("name", "kakaoKing!");
+        mockMvc.perform(post("/v1/signup/kakao").params(params))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(0));
+    }
+
+    @Test
+    public void signInProvider() throws Exception {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("accessToken", "HizF3ir9522bMW3shkO0x0T9zBdXFCW1WsF56Qo9dVsAAAFqMwTqHw");
+        mockMvc.perform(post("/v1/signin/kakao").params(params))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(0))
+                .andExpect(jsonPath("$.data").exists());
     }
 }
