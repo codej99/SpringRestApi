@@ -1,0 +1,16 @@
+spring:
+  profiles: alpha
+  datasource:
+    url: jdbc:mysql://127.0.0.1:33060/daddyprogrammer?useUnicode=true&autoReconnect=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: happydaddy
+    password: daddy!@#1004
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties.hibernate:
+      hbm2ddl.auto: none
+      format_sql: true
+    showSql: true
+    generate-ddl: false
+  url:
+    base: http://alpha.daddyprogrammer.org

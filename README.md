@@ -25,8 +25,32 @@
     - Run -> SpringBootApiApplication
 - Swagger
     - http://localhost:8080/swagger-ui.html
+    
+### 3. DDL
+create table user (
+       msrl bigint not null auto_increment,
+        name varchar(100) not null,
+        password varchar(100),
+        provider varchar(100),
+        uid varchar(50) not null,
+        primary key (msrl)
+    ) engine=InnoDB;
+    
+create table user_roles (
+       user_msrl bigint not null,
+        roles varchar(255)
+    ) engine=InnoDB;
+    
+    
+alter table user 
+add constraint UK_a7hlm8sj8kmijx6ucp7wfyt31 unique (uid);
 
-### 3. 목차
+alter table user_roles 
+       add constraint FKel3d4qj41g0sy1mtp4sh055g7 
+       foreign key (user_msrl) 
+       references user (msrl);
+       
+### 4. 목차
 - SpringBoot2로 Rest api 만들기(1) – Intellij Community에서 프로젝트생성
     - Document
         - https://daddyprogrammer.org/post/19/spring-boot1-start-intellij/

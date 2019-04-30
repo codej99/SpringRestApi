@@ -1,20 +1,9 @@
-server:
-  port: 8080
-
 spring:
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-    driver-class-name: org.h2.Driver
-    username: sa
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    properties.hibernate.hbm2ddl.auto: update
-    showSql: true
+  profiles:
+    active: local # 디폴트 환경
   messages:
     basename: i18n/exception
     encoding: UTF-8
-  jwt:
-    secret: govlepel@$&
   social:
     kakao:
       client_id: XXXXXXXXXXXXXXXXXXXXXXXXXX # 앱생성시 받은 REST API 키
@@ -23,5 +12,5 @@ spring:
         login: https://kauth.kakao.com/oauth/authorize
         token: https://kauth.kakao.com/oauth/token
         profile: https://kapi.kakao.com/v2/user/me
-  url:
-    base: http://localhost:8080
+  jwt:
+    secret: govlepel@$&
