@@ -1,5 +1,7 @@
-server:
-  port: 8080
+logging:
+  level:
+    root: warn
+    com.rest.api: debug
 
 spring:
   profiles: local
