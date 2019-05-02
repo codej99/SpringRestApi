@@ -1,5 +1,8 @@
 package com.rest.api.controller.v1;
 
+import com.rest.api.entity.User;
+import com.rest.api.repo.UserJpaRepo;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,6 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Collections;
+import java.util.Optional;
+
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -29,10 +37,17 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private UserJpaRepo userJpaRepo;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private String token;
 
     @Before
     public void setUp() throws Exception {
+        userJpaRepo.save(User.builder().uid("happydaddy@naver.com").name("happydaddy").password(passwordEncoder.encode("1234")).roles(Collections.singletonList("ROLE_USER")).build());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("id", "happydaddy@naver.com");
         params.add("password", "1234");
@@ -48,6 +63,10 @@ public class UserControllerTest {
         String resultString = result.getResponse().getContentAsString();
         JacksonJsonParser jsonParser = new JacksonJsonParser();
         token = jsonParser.parseMap(resultString).get("data").toString();
+    }
+
+    @After
+    public void tearDown() throws Exception {
     }
 
     @Test
@@ -109,8 +128,10 @@ public class UserControllerTest {
 
     @Test
     public void delete() throws Exception {
+        Optional<User> user = userJpaRepo.findByUid("happydaddy@naver.com");
+        assertTrue(user.isPresent());
         mockMvc.perform(MockMvcRequestBuilders
-                .delete("/v1/user/2")
+                .delete("/v1/user/" + user.get().getMsrl())
                 .header("X-AUTH-TOKEN", token))
                 .andDo(print())
                 .andExpect(status().isOk())

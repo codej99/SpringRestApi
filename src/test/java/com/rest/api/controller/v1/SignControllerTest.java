@@ -1,11 +1,15 @@
 package com.rest.api.controller.v1;
 
+import com.rest.api.entity.User;
+import com.rest.api.repo.UserJpaRepo;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -28,6 +33,17 @@ public class SignControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private UserJpaRepo userJpaRepo;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Before
+    public void setUp() throws Exception {
+        userJpaRepo.save(User.builder().uid("happydaddy@naver.com").name("happydaddy").password(passwordEncoder.encode("1234")).roles(Collections.singletonList("ROLE_USER")).build());
+    }
 
     @Test
     public void signin() throws Exception {
@@ -95,8 +111,8 @@ public class SignControllerTest {
                 .andExpect(jsonPath("$.code").value(-1004));
     }
 
-    @Test
-    public void signUpProvider() throws Exception {
+    @Test @Ignore
+    public void signUpSocial() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("accessToken", "HizF3ir9522bMW3shkO0x0T9zBdXFCW1WsF56Qo9dVsAAAFqMwTqHw");
         params.add("name", "kakaoKing!");
@@ -107,8 +123,8 @@ public class SignControllerTest {
                 .andExpect(jsonPath("$.code").value(0));
     }
 
-    @Test
-    public void signInProvider() throws Exception {
+    @Test @Ignore
+    public void signInSocial() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("accessToken", "HizF3ir9522bMW3shkO0x0T9zBdXFCW1WsF56Qo9dVsAAAFqMwTqHw");
         mockMvc.perform(post("/v1/signin/kakao").params(params))
