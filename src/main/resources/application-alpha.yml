@@ -2,14 +2,14 @@ logging:
   level:
     root: warn
     com.rest.api: info
-  path: /home/ec2-user/api/log
+  path: /home/ec2-user/app/log
   file:
     max-history: 7
 
 spring:
   profiles: alpha
   datasource:
-    url: jdbc:mysql://127.0.0.1:33060/daddyprogrammer?useUnicode=true&autoReconnect=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://127.0.0.1:33060/daddyprogrammer?useUnicode=true&autoReconnect=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: happydaddy
     password: daddy!@#1004
