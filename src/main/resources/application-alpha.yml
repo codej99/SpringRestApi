@@ -2,7 +2,7 @@ logging:
   level:
     root: warn
     com.rest.api: info
-  path: /var/log
+  path: /home/ec2-user/api/log
   file:
     max-history: 7
 
@@ -21,4 +21,4 @@ spring:
     showSql: true
     generate-ddl: false
   url:
-    base: http://alpha.daddyprogrammer.org
+    base: http://dev-api.daddyprogrammer.org
