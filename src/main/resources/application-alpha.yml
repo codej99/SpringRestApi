@@ -2,7 +2,7 @@ logging:
   level:
     root: warn
     com.rest.api: info
-  path: /var/log
+  path: /home/ec2-user/api/log
   file:
     max-history: 7
 
