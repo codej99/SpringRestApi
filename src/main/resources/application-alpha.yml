@@ -21,4 +21,4 @@ spring:
     showSql: true
     generate-ddl: false
   url:
-    base: http://alpha.daddyprogrammer.org
+    base: http://dev-api.daddyprogrammer.org
