@@ -1,6 +1,7 @@
 package com.rest.api.service.social;
 
 import com.rest.api.model.social.KakaoProfile;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class KakaoServiceTest {
     @Autowired
     private KakaoService kakaoService;
 
-    @Test
+    @Test @Ignore
     public void whenGetKakaoProfile_thenReturnProfile() {
 
         String accessToken = "xjsMzpQtIr4w13FIQvL3R7BW7X4yvm1KmzXCTwopyWAAAAFqMxEcwA";
