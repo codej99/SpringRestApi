@@ -1,8 +1,7 @@
 #!/bin/bash
 PROFILE=$1
 PROJECT=SpringRestApi
-PROJECT_HOME=/Users/nhnent/git/${PROJECT}
-#PROJECT_HOME=/home/happydaddy/${PROJECT}
+PROJECT_HOME=/home/happydaddy/${PROJECT}
 JAR_PATH=${PROJECT_HOME}/build/libs/api-0.0.1-SNAPSHOT.jar
 SVR_LIST=server_${PROFILE}.list
 SERVERS=`cat $SVR_LIST`
