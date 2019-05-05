@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HelloController {
 
-    private static final String HELLO = "helloworld";
+    private static final String HELLO = "helloworld-nice to meet you";
 
     @Setter
     @Getter
