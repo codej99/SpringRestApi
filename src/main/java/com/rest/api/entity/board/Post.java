@@ -1,34 +1,39 @@
 package com.rest.api.entity.board;
 
+import com.rest.api.entity.User;
+import com.rest.api.entity.common.CommonDateEntity;
 import lombok.Getter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
-public class Post {
+@NoArgsConstructor
+public class Post extends CommonDateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String author;
     private String title;
     private String content;
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    private LocalDateTime modifiedAt;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Board board;
+    private Long boardId;
 
-    protected Post() {
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
-    protected Post(Board board, String author, String title, String content) {
+    public Post(User user, Long boardId, String author, String title, String content) {
+        this.user = user;
+        this.boardId = boardId;
         this.author = author;
         this.title = title;
         this.content = content;
+    }
+
+    public Post setUpdate(String author, String title, String content) {
+        this.author = author;
+        this.title = title;
+        this.content = content;
+        return this;
     }
 }
