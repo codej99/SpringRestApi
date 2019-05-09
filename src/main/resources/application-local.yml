@@ -1,6 +1,6 @@
 logging:
   level:
-    root: debug
+    root: info
     com.rest.api: debug
 
 spring:

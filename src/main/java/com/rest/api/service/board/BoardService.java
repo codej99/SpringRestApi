@@ -11,13 +11,12 @@ import com.rest.api.repo.UserJpaRepo;
 import com.rest.api.repo.board.BoardJpaRepo;
 import com.rest.api.repo.board.PostJpaRepo;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
-@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class BoardService {
     private final UserJpaRepo userJpaRepo;
 
     public Board findBoard(String boardName) {
-        return boardJpaRepo.findByName(boardName);
+        return Optional.ofNullable(boardJpaRepo.findByName(boardName)).orElseThrow(CResourceNotExistException::new);
     }
 
     public List<Post> findPosts(String boardName) {

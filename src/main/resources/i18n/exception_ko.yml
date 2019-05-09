@@ -24,4 +24,4 @@ notOwner:
   msg: "해당 자원의 소유자가 아닙니다."
 resourceNotExist:
   code: "-1007"
-  msg: "요청하신 자원이 존재 하지 않습니다."
+  msg: "요청한 자원이 존재 하지 않습니다."
