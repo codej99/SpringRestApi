@@ -18,7 +18,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) throws IOException,
             ServletException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/exception/entrypoint");
-        dispatcher.forward(request, response);
+//        RequestDispatcher dispatcher = request.getRequestDispatcher("/exception/entrypoint");
+//        dispatcher.forward(request, response);
+        response.sendRedirect("/exception/entrypoint");
     }
 }
