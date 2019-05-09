@@ -1,8 +1,6 @@
 package com.rest.api.advice;
 
-import com.rest.api.advice.exception.CAuthenticationEntryPointException;
-import com.rest.api.advice.exception.CEmailSigninFailedException;
-import com.rest.api.advice.exception.CUserNotFoundException;
+import com.rest.api.advice.exception.*;
 import com.rest.api.model.response.CommonResult;
 import com.rest.api.service.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +49,20 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public CommonResult AccessDeniedException(HttpServletRequest request, AccessDeniedException e) {
+    public CommonResult accessDeniedException(HttpServletRequest request, AccessDeniedException e) {
         return responseService.getFailResult(Integer.valueOf(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
+    }
+
+    @ExceptionHandler(CCommunicationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult communicationException(HttpServletRequest request, CCommunicationException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("communicationError.code")), getMessage("communicationError.msg"));
+    }
+
+    @ExceptionHandler(CUserExistException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult communicationException(HttpServletRequest request, CUserExistException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("existingUser.code")), getMessage("existingUser.msg"));
     }
 
     // code정보에 해당하는 메시지를 조회합니다.

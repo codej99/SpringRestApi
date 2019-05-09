@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.1.4.RELEASE'
     id 'java'
+    id "org.sonarqube" version "2.7"
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -28,9 +29,11 @@ dependencies {
     implementation 'io.springfox:springfox-swagger2:2.6.1'
     implementation 'io.springfox:springfox-swagger-ui:2.6.1'
     implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
+    implementation 'com.google.code.gson:gson'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
