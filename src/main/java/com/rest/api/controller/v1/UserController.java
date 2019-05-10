@@ -51,12 +51,12 @@ public class UserController {
     @ApiOperation(value = "회원 수정", notes = "회원정보를 수정한다")
     @PutMapping(value = "/user")
     public SingleResult<User> modify(
-            @ApiParam(value = "회원번호", required = true) @RequestParam long msrl,
             @ApiParam(value = "회원이름", required = true) @RequestParam String name) {
-        User user = User.builder()
-                .msrl(msrl)
-                .name(name)
-                .build();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = authentication.getName();
+        User user = userJpaRepo.findByUid(id).orElseThrow(CUserNotFoundException::new);
+        user.setName(name);
         return responseService.getSingleResult(userJpaRepo.save(user));
     }
 

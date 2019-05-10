@@ -47,7 +47,7 @@ public class UserControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        userJpaRepo.save(User.builder().uid("happydaddy@naver.com").name("happydaddy").password(passwordEncoder.encode("1234")).roles(Collections.singletonList("ROLE_USER")).build());
+        //userJpaRepo.save(User.builder().uid("happydaddy@naver.com").name("happydaddy").password(passwordEncoder.encode("1234")).roles(Collections.singletonList("ROLE_USER")).build());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("id", "happydaddy@naver.com");
         params.add("password", "1234");
@@ -75,8 +75,8 @@ public class UserControllerTest {
                 .get("/v1/users")
                 .header("X-AUTH-TOKEN", "XXXXXXXXXX"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("/exception/entrypoint"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/exception/entrypoint"));
     }
 
     @Test
@@ -86,8 +86,8 @@ public class UserControllerTest {
                 .get("/v1/users"))
                 //.header("X-AUTH-TOKEN", token))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("/exception/accessdenied"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/exception/accessdenied"));
     }
 
     @Test
@@ -115,7 +115,7 @@ public class UserControllerTest {
     @Test
     public void modify() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("msrl", "1");
+        params.add("uid", "happydaddy@naver.com");
         params.add("name", "행복전도사");
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/v1/user")
@@ -123,7 +123,8 @@ public class UserControllerTest {
                 .params(params))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true));
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.name").value("행복전도사"));
     }
 
     @Test

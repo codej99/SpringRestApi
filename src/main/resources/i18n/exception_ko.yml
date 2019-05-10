@@ -1,6 +1,6 @@
 unKnown:
   code: "-9999"
-  msg: "알수 없는 오류가 발생하였습니다."
+  msg: "알수없는 오류가 발생하였습니다."
 userNotFound:
   code: "-1000"
   msg: "존재하지 않는 회원입니다."
@@ -19,3 +19,9 @@ communicationError:
 existingUser:
   code: "-1005"
   msg: "이미 가입한 회원입니다. 로그인을 해주십시오."
+notOwner:
+  code: "-1006"
+  msg: "해당 자원의 소유자가 아닙니다."
+resourceNotExist:
+  code: "-1007"
+  msg: "요청한 자원이 존재 하지 않습니다."
