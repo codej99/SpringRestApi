@@ -56,7 +56,7 @@ public class BoardService {
             throw new CNotOwnerException();
 
         post.setUpdate(paramsPost.getAuthor(), paramsPost.getTitle(), paramsPost.getContent());
-        return postJpaRepo.save(post);
+        return post;
     }
 
     // 게시물을 삭제합니다. 게시물 등록자와 로그인 회원정보가 틀리면 CNotOwnerException 처리합니다.
