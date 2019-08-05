@@ -55,6 +55,7 @@ public class BoardService {
         if (!uid.equals(user.getUid()))
             throw new CNotOwnerException();
 
+        // 영속성 컨텍스트의 변경감지(dirty checking) 기능에 의해 조회한 Post내용을 변경만 해도 Update쿼리가 실행됩니다.
         post.setUpdate(paramsPost.getAuthor(), paramsPost.getTitle(), paramsPost.getContent());
         return post;
     }
