@@ -22,3 +22,6 @@ spring:
     generate-ddl: false
   url:
     base: http://dev-api.daddyprogrammer.org
+  redis:
+    host: Standalone Redis 호스트
+    port: Standalone Redis 포트

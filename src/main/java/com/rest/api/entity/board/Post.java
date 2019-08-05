@@ -1,16 +1,19 @@
 package com.rest.api.entity.board;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rest.api.entity.User;
 import com.rest.api.entity.common.CommonDateEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Post extends CommonDateEntity {
+public class Post extends CommonDateEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
@@ -25,13 +28,13 @@ public class Post extends CommonDateEntity {
     @JoinColumn(name = "board_id")
     private Board board; // 게시글 - 게시판의 관계 - N:1
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "msrl")
     private User user;  // 게시글 - 회원의 관계 - N:1
 
     // Join 테이블이 Json결과에 표시되지 않도록 처리.
-    protected Board getBoard() {
+    @JsonIgnore
+    public Board getBoard() {
         return board;
     }
 
