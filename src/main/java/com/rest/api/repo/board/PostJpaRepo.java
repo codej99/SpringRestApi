@@ -1,10 +1,7 @@
 package com.rest.api.repo.board;
 
-import com.rest.api.common.CacheKey;
 import com.rest.api.entity.board.Board;
 import com.rest.api.entity.board.Post;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
