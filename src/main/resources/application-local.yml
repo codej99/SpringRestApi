@@ -18,3 +18,6 @@ spring:
     generate-ddl: true
   url:
     base: http://localhost:8080
+  redis:
+    host: localhost
+    port: 6379

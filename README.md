@@ -115,3 +115,8 @@ alter table user_roles
         - https://daddyprogrammer.org/post/2695/springboot2-simple-jpa-board/
     - Git
         - https://github.com/codej99/SpringRestApi/tree/feature/board
+  - SpringBoot2로 Rest api 만들기(15) – Redis로 api 결과 캐싱(Caching)처리
+    - Document
+        - https://daddyprogrammer.org/post/3870/spring-rest-api-redis-caching/
+    - Git
+        - https://github.com/codej99/SpringRestApi/tree/cache-data-redis
