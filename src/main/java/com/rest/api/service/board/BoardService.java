@@ -33,7 +33,7 @@ public class BoardService {
 
     // 게시판 이름으로 게시물 리스트 조회.
     public List<Post> findPosts(String boardName) {
-        return postJpaRepo.findByBoard(findBoard(boardName));
+        return postJpaRepo.findByBoardOrderByPostIdDesc(findBoard(boardName));
     }
 
     // 게시물ID로 게시물 단건 조회. 없을경우 CResourceNotExistException 처리
