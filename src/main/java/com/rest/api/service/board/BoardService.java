@@ -26,6 +26,10 @@ public class BoardService {
     private final PostJpaRepo postJpaRepo;
     private final UserJpaRepo userJpaRepo;
 
+    public Board insertBoard(String boardName) {
+        return boardJpaRepo.save(Board.builder().name(boardName).build());
+    }
+
     // 게시판 이름으로 게시판을 조회. 없을경우 CResourceNotExistException 처리
     public Board findBoard(String boardName) {
         return Optional.ofNullable(boardJpaRepo.findByName(boardName)).orElseThrow(CResourceNotExistException::new);
