@@ -34,6 +34,10 @@ public class BoardService {
     private final UserJpaRepo userJpaRepo;
     private final CacheSevice cacheSevice;
 
+    public Board insertBoard(String boardName) {
+        return boardJpaRepo.save(Board.builder().name(boardName).build());
+    }
+
     // 게시판 이름으로 게시판을 조회. 없을경우 CResourceNotExistException 처리
     @Cacheable(value = CacheKey.BOARD, key = "#boardName", unless = "#result == null")
     public Board findBoard(String boardName) {
