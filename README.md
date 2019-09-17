@@ -97,3 +97,26 @@ alter table user_roles
         - https://daddyprogrammer.org/post/1012/springboot2-rest-api-social-login-kakao/
     - Git
         - https://github.com/codej99/SpringRestApi/tree/feature/social-kakao
+- SpringBoot2로 Rest api 만들기(11) – profile을 이용한 환경별 설정 분리
+    - Document
+        - https://daddyprogrammer.org/post/2421/springboot2-seperate-environment-by-profile/
+    - Git
+        - https://github.com/codej99/SpringRestApi/tree/feature/seperate-profile
+ - SpringBoot2로 Rest api 만들기(12) – Deploy & Nginx 연동 & 무중단 배포 하기
+    - Document
+        - https://daddyprogrammer.org/post/2445/springboot2-blue-green-deploy-nginx/
+    - Git
+        - https://github.com/codej99/SpringRestApi/tree/feature/gracefullyshutdown
+  - SpringBoot2로 Rest api 만들기(13) – Jenkins 배포(Deploy) + Git Tag Rollback
+    - Document
+        - https://daddyprogrammer.org/post/2697/springboot2-jenkins-deploy-gittag-rollback/
+  - SpringBoot2로 Rest api 만들기(14) – 간단한 JPA 게시판(board) 만들기
+    - Document
+        - https://daddyprogrammer.org/post/2695/springboot2-simple-jpa-board/
+    - Git
+        - https://github.com/codej99/SpringRestApi/tree/feature/board
+  - SpringBoot2로 Rest api 만들기(15) – Redis로 api 결과 캐싱(Caching)처리
+    - Document
+        - https://daddyprogrammer.org/post/3870/spring-rest-api-redis-caching/
+    - Git
+        - https://github.com/codej99/SpringRestApi/tree/cache-data-redis
