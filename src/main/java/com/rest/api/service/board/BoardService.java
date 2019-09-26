@@ -58,18 +58,18 @@ public class BoardService {
 
     // 게시글을 등록합니다. 게시글의 회원UID가 조회되지 않으면 CUserNotFoundException 처리합니다.
     @CacheEvict(value = CacheKey.POSTS, key = "#boardName")
-    public Post writePost(String uid, String boardName, ParamsPost paramsPost) {
+    public Post writePost(Long msrl, String boardName, ParamsPost paramsPost) {
         Board board = findBoard(boardName);
-        Post post = new Post(userJpaRepo.findByUid(uid).orElseThrow(CUserNotFoundException::new), board, paramsPost.getAuthor(), paramsPost.getTitle(), paramsPost.getContent());
+        Post post = new Post(userJpaRepo.findById(msrl).orElseThrow(CUserNotFoundException::new), board, paramsPost.getAuthor(), paramsPost.getTitle(), paramsPost.getContent());
         return postJpaRepo.save(post);
     }
 
     // 게시글을 수정합니다. 게시글 등록자와 로그인 회원정보가 틀리면 CNotOwnerException 처리합니다.
     //@CachePut(value = CacheKey.POST, key = "#postId") 갱신된 정보만 캐시할경우에만 사용!
-    public Post updatePost(long postId, String uid, ParamsPost paramsPost) {
+    public Post updatePost(long postId, Long msrl, ParamsPost paramsPost) {
         Post post = getPost(postId);
         User user = post.getUser();
-        if (!uid.equals(user.getUid()))
+        if (!msrl.equals(user.getMsrl()))
             throw new CNotOwnerException();
 
         // 영속성 컨텍스트의 변경감지(dirty checking) 기능에 의해 조회한 Post내용을 변경만 해도 Update쿼리가 실행됩니다.
@@ -79,10 +79,10 @@ public class BoardService {
     }
 
     // 게시글을 삭제합니다. 게시글 등록자와 로그인 회원정보가 틀리면 CNotOwnerException 처리합니다.
-    public boolean deletePost(long postId, String uid) {
+    public boolean deletePost(long postId, Long msrl) {
         Post post = getPost(postId);
         User user = post.getUser();
-        if (!uid.equals(user.getUid()))
+        if (!msrl.equals(user.getMsrl()))
             throw new CNotOwnerException();
         postJpaRepo.delete(post);
         cacheSevice.deleteBoardCache(post.getPostId(), post.getBoard().getName());

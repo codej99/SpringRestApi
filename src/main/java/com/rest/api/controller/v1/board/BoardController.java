@@ -56,8 +56,7 @@ public class BoardController {
     @PostMapping(value = "/{boardName}/post")
     public SingleResult<Post> post(@PathVariable String boardName, @Valid @ModelAttribute ParamsPost post) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String uid = authentication.getName();
-        return responseService.getSingleResult(boardService.writePost(uid, boardName, post));
+        return responseService.getSingleResult(boardService.writePost(Long.valueOf(authentication.getName()), boardName, post));
     }
 
     @ApiOperation(value = "게시글 상세", notes = "게시글 상세정보를 조회한다.")
@@ -73,8 +72,7 @@ public class BoardController {
     @PutMapping(value = "/post/{postId}")
     public SingleResult<Post> post(@PathVariable long postId, @Valid @ModelAttribute ParamsPost post) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String uid = authentication.getName();
-        return responseService.getSingleResult(boardService.updatePost(postId, uid, post));
+        return responseService.getSingleResult(boardService.updatePost(postId, Long.valueOf(authentication.getName()), post));
     }
 
     @ApiImplicitParams({
@@ -84,8 +82,7 @@ public class BoardController {
     @DeleteMapping(value = "/post/{postId}")
     public CommonResult deletePost(@PathVariable long postId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String uid = authentication.getName();
-        boardService.deletePost(postId, uid);
+        boardService.deletePost(postId, Long.valueOf(authentication.getName()));
         return responseService.getSuccessResult();
     }
 }

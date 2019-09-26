@@ -40,9 +40,8 @@ public class UserController {
     public SingleResult<User> findUser() {
         // SecurityContext에서 인증받은 회원의 정보를 얻어온다.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String id = authentication.getName();
         // 결과데이터가 단일건인경우 getSingleResult를 이용해서 결과를 출력한다.
-        return responseService.getSingleResult(userJpaRepo.findByUid(id).orElseThrow(CUserNotFoundException::new));
+        return responseService.getSingleResult(userJpaRepo.findById(Long.valueOf(authentication.getName())).orElseThrow(CUserNotFoundException::new));
     }
 
     @ApiImplicitParams({
@@ -54,8 +53,7 @@ public class UserController {
             @ApiParam(value = "회원이름", required = true) @RequestParam String name) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String id = authentication.getName();
-        User user = userJpaRepo.findByUid(id).orElseThrow(CUserNotFoundException::new);
+        User user = userJpaRepo.findById(Long.valueOf(authentication.getName())).orElseThrow(CUserNotFoundException::new);
         user.setName(name);
         return responseService.getSingleResult(userJpaRepo.save(user));
     }
