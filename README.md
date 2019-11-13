@@ -3,7 +3,7 @@
 ### 0. 개요
 - SpringBoot2 framework 기반에서 RESTful api 서비스를 Step by Step으로 만들어 나가는 프로젝트
 - daddyprogrammer.org에서 연재 및 소스 Github 등록
-    - https://daddyprogrammer.org/post/series/springboot2%EB%A1%9C-rest-api-%EB%A7%8C%EB%93%A4%EA%B8%B0/
+    - https://daddyprogrammer.org/post/series/springboot2-make-rest-api/
 
 ### 1. 개발환경
 - Java 8~11
