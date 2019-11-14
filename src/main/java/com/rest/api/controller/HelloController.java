@@ -13,7 +13,7 @@ public class HelloController {
 
     @Setter
     @Getter
-    public static class Hello {
+    private static class Hello {
         private String message;
     }
 
@@ -33,6 +33,6 @@ public class HelloController {
 
     @GetMapping(value = "/helloworld/page")
     public String helloworld() {
-        return HELLO;
+        return "helloworld";
     }
 }
