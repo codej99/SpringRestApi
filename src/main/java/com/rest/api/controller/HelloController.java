@@ -33,6 +33,6 @@ public class HelloController {
 
     @GetMapping(value = "/helloworld/page")
     public String helloworld() {
-        return HELLO;
+        return "helloworld";
     }
 }
