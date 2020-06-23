@@ -77,6 +77,12 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("resourceNotExist.code")), getMessage("resourceNotExist.msg"));
     }
 
+    @ExceptionHandler(CForbiddenWordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public CommonResult forbiddenWordException(HttpServletRequest request, CForbiddenWordException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("forbiddenWord.code")), getMessage("forbiddenWord.msg", new Object[]{e.getMessage()}));
+    }
+
     // code정보에 해당하는 메시지를 조회합니다.
     private String getMessage(String code) {
         return getMessage(code, null);

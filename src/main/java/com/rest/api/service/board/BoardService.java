@@ -1,5 +1,6 @@
 package com.rest.api.service.board;
 
+import com.rest.api.advice.exception.CForbiddenWordException;
 import com.rest.api.advice.exception.CNotOwnerException;
 import com.rest.api.advice.exception.CResourceNotExistException;
 import com.rest.api.advice.exception.CUserNotFoundException;
@@ -20,6 +21,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +62,8 @@ public class BoardService {
     @CacheEvict(value = CacheKey.POSTS, key = "#boardName")
     public Post writePost(String uid, String boardName, ParamsPost paramsPost) {
         Board board = findBoard(boardName);
+        // 금칙어 체크
+        checkForbiddenWord(paramsPost.getContent());
         Post post = new Post(userJpaRepo.findByUid(uid).orElseThrow(CUserNotFoundException::new), board, paramsPost.getAuthor(), paramsPost.getTitle(), paramsPost.getContent());
         return postJpaRepo.save(post);
     }
@@ -71,6 +75,9 @@ public class BoardService {
         User user = post.getUser();
         if (!uid.equals(user.getUid()))
             throw new CNotOwnerException();
+
+        // 금칙어 체크
+        checkForbiddenWord(paramsPost.getContent());
 
         // 영속성 컨텍스트의 변경감지(dirty checking) 기능에 의해 조회한 Post내용을 변경만 해도 Update쿼리가 실행됩니다.
         post.setUpdate(paramsPost.getAuthor(), paramsPost.getTitle(), paramsPost.getContent());
@@ -87,5 +94,12 @@ public class BoardService {
         postJpaRepo.delete(post);
         cacheSevice.deleteBoardCache(post.getPostId(), post.getBoard().getName());
         return true;
+    }
+
+    public void checkForbiddenWord(String word) {
+        List<String> forbiddenWords = Arrays.asList("개새끼", "쌍년", "씨발");
+        Optional<String> forbiddenWord = forbiddenWords.stream().filter(word::contains).findFirst();
+        if(forbiddenWord.isPresent())
+            throw new CForbiddenWordException(forbiddenWord.get());
     }
 }
