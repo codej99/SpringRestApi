@@ -4,6 +4,7 @@ import com.rest.api.advice.exception.CForbiddenWordException;
 import com.rest.api.advice.exception.CNotOwnerException;
 import com.rest.api.advice.exception.CResourceNotExistException;
 import com.rest.api.advice.exception.CUserNotFoundException;
+import com.rest.api.annotation.ForbiddenWordCheck;
 import com.rest.api.common.CacheKey;
 import com.rest.api.entity.User;
 import com.rest.api.entity.board.Board;
@@ -60,24 +61,21 @@ public class BoardService {
 
     // 게시글을 등록합니다. 게시글의 회원UID가 조회되지 않으면 CUserNotFoundException 처리합니다.
     @CacheEvict(value = CacheKey.POSTS, key = "#boardName")
+    @ForbiddenWordCheck
     public Post writePost(String uid, String boardName, ParamsPost paramsPost) {
         Board board = findBoard(boardName);
-        // 금칙어 체크
-        checkForbiddenWord(paramsPost.getContent());
         Post post = new Post(userJpaRepo.findByUid(uid).orElseThrow(CUserNotFoundException::new), board, paramsPost.getAuthor(), paramsPost.getTitle(), paramsPost.getContent());
         return postJpaRepo.save(post);
     }
 
     // 게시글을 수정합니다. 게시글 등록자와 로그인 회원정보가 틀리면 CNotOwnerException 처리합니다.
     //@CachePut(value = CacheKey.POST, key = "#postId") 갱신된 정보만 캐시할경우에만 사용!
+    @ForbiddenWordCheck
     public Post updatePost(long postId, String uid, ParamsPost paramsPost) {
         Post post = getPost(postId);
         User user = post.getUser();
         if (!uid.equals(user.getUid()))
             throw new CNotOwnerException();
-
-        // 금칙어 체크
-        checkForbiddenWord(paramsPost.getContent());
 
         // 영속성 컨텍스트의 변경감지(dirty checking) 기능에 의해 조회한 Post내용을 변경만 해도 Update쿼리가 실행됩니다.
         post.setUpdate(paramsPost.getAuthor(), paramsPost.getTitle(), paramsPost.getContent());
@@ -94,12 +92,5 @@ public class BoardService {
         postJpaRepo.delete(post);
         cacheSevice.deleteBoardCache(post.getPostId(), post.getBoard().getName());
         return true;
-    }
-
-    public void checkForbiddenWord(String word) {
-        List<String> forbiddenWords = Arrays.asList("개새끼", "쌍년", "씨발");
-        Optional<String> forbiddenWord = forbiddenWords.stream().filter(word::contains).findFirst();
-        if(forbiddenWord.isPresent())
-            throw new CForbiddenWordException(forbiddenWord.get());
     }
 }
