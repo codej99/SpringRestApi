@@ -120,3 +120,8 @@ alter table user_roles
         - https://daddyprogrammer.org/post/3870/spring-rest-api-redis-caching/
     - Git
         - https://github.com/codej99/SpringRestApi/tree/cache-data-redis
+  - SpringBoot2로 Rest api 만들기(16) – AOP와 Custom Annotation을 이용한 금칙어(Forbidden Word) 처리
+    - Document
+        - https://daddyprogrammer.org/post/11356/springboot2-forbidden-word-by-aop-annotation/
+    - Git
+        - https://github.com/codej99/SpringRestApi/tree/feature/block_fobidden_word
