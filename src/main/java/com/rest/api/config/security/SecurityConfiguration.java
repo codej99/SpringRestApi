@@ -3,6 +3,7 @@ package com.rest.api.config.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +11,12 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Locale;
 
 @RequiredArgsConstructor
 @Configuration
@@ -39,6 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
             .and()
+                .addFilterBefore(new AthenticationEntryLocaleFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // jwt token 필터를 id/password 인증 필터 전에 넣어라.
 
     }
@@ -49,4 +57,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/swagger-ui.html", "/webjars/**", "/swagger/**");
 
     }
+
+    private static class AthenticationEntryLocaleFilter implements Filter {
+        private SessionLocaleResolver localeResolver;
+
+        private AthenticationEntryLocaleFilter() {
+            localeResolver = new SessionLocaleResolver();
+            localeResolver.setDefaultLocale(Locale.KOREAN);
+        }
+
+        @Override
+        public void init(FilterConfig filterConfig) {
+        }
+
+        @Override
+        public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+            if(request.getParameter("lang") != null)
+                localeResolver.setDefaultLocale(Locale.forLanguageTag(request.getParameter("lang")));
+            Locale locale = localeResolver.resolveLocale((HttpServletRequest) request);
+            LocaleContextHolder.setLocale(locale);
+            chain.doFilter(request, response);
+        }
+
+        @Override
+        public void destroy() {
+        }
+    }
 }
+
